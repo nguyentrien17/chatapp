@@ -30,17 +30,23 @@ Khi xây dựng một chat app bằng Node.js, có thể sử dụng các framew
   **Multer**: là một middleware Node.js cho phép xử lý các yêu cầu HTTP và multipart/form-data, chủ yếu được sử dụng để xử lý tải lên (upload) các tệp tin từ máy khách lên máy chủ.
 
   **emoji-mart**: là một thư viện JavaScript cung cấp các thành phần (components) giao diện người dùng để hiển thị và chọn biểu tượng cảm xúc (emoji). Nó cung cấp các khung nhìn (views) và tính năng tùy chỉnh để tạo trải nghiệm emoji linh hoạt trên ứng dụng web của bạn.
+  
     ```bash
      npm install multer emoji-mart
     ```
+    
 5. Tạo một file **package.json** mới cho dự án của bạn. File package.json chứa thông tin về dự án, các dependencies (phụ thuộc) cần thiết và các cấu hình khác liên quan đến dự án.
+   
     ```bash
      npm init
     ```
+    
     Sau khi chạy lệnh trên, npm sẽ hỏi bạn về các thông tin dự án và bạn có thể nhập giá trị cho các thuộc tính tương ứng. Bạn có thể bỏ qua một số trường nếu muốn và để mặc định bằng cách nhấn ** Enter **. Khi bạn hoàn thành việc cung cấp thông tin, npm sẽ tạo một file package.json mới trong thư mục dự án của bạn, dựa trên các thông tin mà bạn đã cung cấp.
-6. cài đặt hai gói phụ thuộc là Express và ws.
+   
+7. cài đặt hai gói phụ thuộc là Express và ws.
     **Express**: là một framework phát triển ứng dụng web phía máy chủ (server-side) bằng ngôn ngữ JavaScript. Nó cung cấp các tính năng và công cụ để xây dựng các ứng dụng web một cách dễ dàng và mạnh mẽ.
     **ws**: là một thư viện WebSocket cho Node.js. Nó cung cấp một giao diện đơn giản để tạo và quản lý kết nối WebSocket giữa máy chủ và trình duyệt hoặc ứng dụng client-server khác.
+   
     ```bash
       npm install express ws
     ```
@@ -71,5 +77,6 @@ Sau khi chạy lệnh trên hãy truy cập vào (http://localhost:3000/) để 
     docker-compose up
   ```
   Sau khi chạy lệnh trên hãy truy cập vào (http://localhost:3000/) để xem kết quả.
+  
   **Tuy nhiên** bạn cũng có thể thay đổi cổng bằng cách sửa lại **EXPOSE** trong dockerfile và **ports:** trong docker-compose.yml thành các cổng mong muốn.
  
