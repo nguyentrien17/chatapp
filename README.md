@@ -68,9 +68,9 @@ Sau khi chạy lệnh trên hãy truy cập vào (http://localhost:3000/) để 
      docker build -t chat-app .
    ```
 
-    ```bash
+   ```bash
       docker run -p 3000:3000 chat-app
-    ```
+   ```
   Sau khi chạy lệnh trên hãy truy cập vào (http://localhost:3000/) để xem kết quả.
 
   ### Cách 2:
