@@ -31,9 +31,9 @@ Khi xây dựng một chat app bằng Node.js, có thể sử dụng các framew
 
   **emoji-mart**: là một thư viện JavaScript cung cấp các thành phần (components) giao diện người dùng để hiển thị và chọn biểu tượng cảm xúc (emoji). Nó cung cấp các khung nhìn (views) và tính năng tùy chỉnh để tạo trải nghiệm emoji linh hoạt trên ứng dụng web của bạn.
   
-    ```bash
+    
      npm install multer emoji-mart
-    ```
+    
     
 5. Tạo một file **package.json** mới cho dự án của bạn. File package.json chứa thông tin về dự án, các dependencies (phụ thuộc) cần thiết và các cấu hình khác liên quan đến dự án.
    
