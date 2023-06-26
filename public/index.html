@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body{
+        background-image: url(https://drive.google.com/uc?id=1D50ayKP9sp8Z9DN3M5O5PQyUgtodVO5f&export=download.);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    #sendButton{
+        width: 100px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+    #chatapp{
+        width: 100%;
+        height: 200px;
+    }
+    .container{
+        text-align: center;
+    }
+    input{
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+    .chat-frame {
+      border: 1px solid #ccc;
+      height: 400px;
+      overflow-y: scroll;
+      padding: 10px;
+      background-color: #e1bdbd;
+    }
+    .username {
+      font-weight: bold;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .left {
+      text-align: left;
+      background-color: #f0f0f0;
+      color: rgb(4, 4, 168);
+      padding: 5px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+    .right {
+      text-align: right;
+      background-color: #d3eddc;
+      color: rgb(11, 76, 11);
+      padding: 5px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+    .chat-image {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 10px;
+    }
+    .container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div>
+        <img id="chatapp" src="https://drive.google.com/uc?id=14GY0l7e2Alp06naaAkRcz_0WcoKokYTp&export=download." alt="...">       
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Username" id="usernameInput">
+    </div>
+    <div class="chat-frame" id="chatFrame"></div>
+    <div class="input-group mb-3">
+      <input type="file" class="form-control-file" id="fileInput">
+      <input type="text" class="form-control" placeholder="Message" id="messageInput">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button" id="sendButton">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatFrame = document.getElementById('chatFrame');
+    const usernameInput = document.getElementById('usernameInput');
+    const fileInput = document.getElementById('fileInput');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    // Create a WebSocket connection
+    const socket = new WebSocket('ws://localhost:3000/chat');
+
+    // Flag to track if the username has been sent
+    let usernameSent = false;
+
+    // Handle incoming messages from the server
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      appendMessage(message);
+    };
+
+    // Send a message to the server
+    const sendMessage = () => {
+      const username = usernameInput.value.trim();
+      const message = messageInput.value.trim();
+      if (!usernameSent && username && message) {
+        // Lock the username input after sending the first message
+        usernameInput.disabled = true;
+        usernameSent = true;
+      }
+      if (username && (message || fileInput.files.length > 0)) {
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = () => {
+            const payload = {
+              username,
+              message,
+              file: reader.result
+            };
+            socket.send(JSON.stringify(payload));
+            messageInput.value = '';
+            fileInput.value = '';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          const payload = {
+            username,
+            message
+          };
+          socket.send(JSON.stringify(payload));
+          messageInput.value = '';
+        }
+      }
+    };
+
+    // Append a message to the chat frame
+    const appendMessage = (message) => {
+      const { username, message: content, file } = message;
+      const side = message.username === usernameInput.value ? 'right' : 'left';
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', side);
+      messageElement.innerHTML = `<span class="username">${username}:</span> ${content}`;
+      if (file) {
+        const fileElement = document.createElement('img');
+        fileElement.src = file;
+        fileElement.classList.add('chat-image');
+        messageElement.appendChild(fileElement);
+      }
+      chatFrame.appendChild(messageElement);
+      chatFrame.scrollTop = chatFrame.scrollHeight;
+    };
+
+    // Send a message when the "Send" button is clicked
+    sendButton.addEventListener('click', sendMessage);
+
+    // Send a message when the Enter key is pressed
+    messageInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
