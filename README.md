@@ -27,12 +27,12 @@ Khi xây dựng một chat app bằng Node.js, có thể sử dụng các framew
     ```
 4. cài đặt hai gói npm là Multer và emoji-mart trong môi trường Node.js.
 
-  **Multer**: là một middleware Node.js cho phép xử lý các yêu cầu HTTP và multipart/form-data, chủ yếu được sử dụng để xử lý tải lên (upload) các tệp tin từ máy khách lên máy chủ.
-
-  **emoji-mart**: là một thư viện JavaScript cung cấp các thành phần (components) giao diện người dùng để hiển thị và chọn biểu tượng cảm xúc (emoji). Nó cung cấp các khung nhìn (views) và tính năng tùy chỉnh để tạo trải nghiệm emoji linh hoạt trên ứng dụng web của bạn.
-  
-    
-     npm install multer emoji-mart
+   **Multer**: là một middleware Node.js cho phép xử lý các yêu cầu HTTP và multipart/form-data, chủ yếu được sử dụng để xử lý tải lên (upload) các tệp tin từ máy khách lên máy chủ.
+ 
+   **emoji-mart**: là một thư viện JavaScript cung cấp các thành phần (components) giao diện người dùng để hiển thị và chọn biểu tượng cảm xúc (emoji). Nó cung cấp các khung nhìn (views) và tính năng tùy chỉnh để tạo trải nghiệm emoji linh hoạt trên ứng dụng web của bạn.
+   
+     
+      npm install multer emoji-mart
     
     
 5. Tạo một file **package.json** mới cho dự án của bạn. File package.json chứa thông tin về dự án, các dependencies (phụ thuộc) cần thiết và các cấu hình khác liên quan đến dự án.
