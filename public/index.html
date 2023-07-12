@@ -59,11 +59,6 @@
       max-height: 200px;
       margin-top: 10px;
     }
-    .file-link {
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
-    }
     .container {
       margin-top: 20px;
     }
@@ -118,38 +113,38 @@
       if (username && (message || fileInput.files.length > 0)) {
         if (fileInput.files.length > 0) {
           const file = fileInput.files[0];
-          if (file.type.startsWith('image/')) {
-            // File is an image
-            const reader = new FileReader();
-            reader.onload = () => {
-              const payload = {
-                username,
-                message,
-                file: reader.result
-              };
-              socket.send(JSON.stringify(payload));
-              messageInput.value = '';
-              fileInput.value = '';
-            };
-            reader.readAsDataURL(file);
-          } else {
-            // File is not an image
-            const reader = new FileReader();
-            reader.onload = () => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (file.type.startsWith('image/')) {
+              // File is an image
               const payload = {
                 username,
                 message,
                 file: {
                   name: file.name,
+                  type: file.type,
                   data: reader.result
                 }
               };
               socket.send(JSON.stringify(payload));
               messageInput.value = '';
               fileInput.value = '';
-            };
-            reader.readAsDataURL(file);
-          }
+            } else {
+              // File is not an image
+              const payload = {
+                username,
+                message,
+                file: {
+                  name: file.name,
+                  type: file.type
+                }
+              };
+              socket.send(JSON.stringify(payload));
+              messageInput.value = '';
+              fileInput.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
         } else {
           const payload = {
             username,
@@ -168,15 +163,22 @@
       const messageElement = document.createElement('div');
       messageElement.classList.add('message', side);
       messageElement.innerHTML = `<span class="username">${username}:</span> ${content}`;
-      if (file && typeof file !== 'string') {
+      if (file) {
         const fileElement = document.createElement('div');
-        const fileLinkElement = document.createElement('a');
-        fileLinkElement.href = file.data;
-        fileLinkElement.textContent = `File: ${file.name}`;
-        fileLinkElement.download = file.name;
-        fileLinkElement.classList.add('file-link');
-        fileLinkElement.addEventListener('click', downloadFile);
-        fileElement.appendChild(fileLinkElement);
+        if (file.type.startsWith('image/')) {
+          // File is an image
+          const imageElement = document.createElement('img');
+          imageElement.src = file.data;
+          imageElement.classList.add('chat-image');
+          fileElement.appendChild(imageElement);
+        } else {
+          // File is not an image
+          const fileLinkElement = document.createElement('a');
+          fileLinkElement.href = file.data;
+          fileLinkElement.textContent = `File: ${file.name}`;
+          fileLinkElement.download = file.name;
+          fileElement.appendChild(fileLinkElement);
+        }
         messageElement.appendChild(fileElement);
       }
       chatFrame.appendChild(messageElement);
