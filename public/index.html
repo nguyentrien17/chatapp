@@ -59,6 +59,11 @@
       max-height: 200px;
       margin-top: 10px;
     }
+    .file-link {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
     .container {
       margin-top: 20px;
     }
@@ -136,7 +141,8 @@
                 message,
                 file: {
                   name: file.name,
-                  type: file.type
+                  type: file.type,
+                  data: null
                 }
               };
               socket.send(JSON.stringify(payload));
@@ -174,9 +180,9 @@
         } else {
           // File is not an image
           const fileLinkElement = document.createElement('a');
-          fileLinkElement.href = file.data;
           fileLinkElement.textContent = `File: ${file.name}`;
-          fileLinkElement.download = file.name;
+          fileLinkElement.classList.add('file-link');
+          fileLinkElement.addEventListener('click', () => downloadFile(file));
           fileElement.appendChild(fileLinkElement);
         }
         messageElement.appendChild(fileElement);
@@ -196,14 +202,14 @@
     });
 
     // Handle file download
-    const downloadFile = (event) => {
-      event.preventDefault();
-      const fileURL = event.target.href;
-      const fileName = event.target.download;
+    const downloadFile = (file) => {
+      const blob = new Blob([file.data], { type: file.type });
+      const url = URL.createObjectURL(blob);
       const downloadLink = document.createElement('a');
-      downloadLink.href = fileURL;
-      downloadLink.download = fileName;
+      downloadLink.href = url;
+      downloadLink.download = file.name;
       downloadLink.click();
+      URL.revokeObjectURL(url);
     };
   </script>
 </body>
